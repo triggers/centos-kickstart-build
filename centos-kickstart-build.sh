@@ -86,6 +86,18 @@ echo "Finished sending key presses"
 # installer, which senses the human there and politely asks for
 # confirmation.
 
+# Update: Nope. Did not work even with no vncviewer connected.  Looks like
+# alt-B will select that button.  Seems to take at least 20 seconds to get
+# to that screen so....
+
+sleep 60
+echo sendkey alt-b | nc 127.0.0.1 4567
+
+echo
+echo "Just sent an extra alt-b just in case"
+echo "it is stuck on the confirm install screen"
+echo
+echo "Now waiting for kvm to exit. (FYI, ^c will kill KVM)"
 wait
 
 # discover the supported keys by doing:
