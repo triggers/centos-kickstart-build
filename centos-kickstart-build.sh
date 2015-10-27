@@ -50,23 +50,22 @@ kvmcmdline=(
     /usr/bin/qemu-kvm
     -name ksvm
 
-    -monitor telnet:0.0.0.0:4567,server,nowait
     -fda "$KSFPY"
     -device virtio-net,netdev=user.0
     -drive "file=$target_image,if=virtio,cache=writeback,discard=ignore"
 
-    -boot once=d
     -m "$memory"
     -machine type=pc,accel=kvm
 
     -netdev user,id=user.0,hostfwd=tcp::2224-:22
-
+    -monitor telnet:0.0.0.0:4567,server,nowait
     -vnc 0.0.0.0:47
     )
 
 echo "${kvmcmdline[@]}" >runscript.sh
+chmod +x runscript.sh
 
-"${kvmcmdline[@]}" -cdrom "$install_iso" >kvm.stdout 2>kvm.stderr &
+"${kvmcmdline[@]}" -boot once=d -cdrom "$install_iso" >kvm.stdout 2>kvm.stderr &
 echo "$!" >kvm.pid
 
 sleep 15
